@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zgłoszenie - Spółdzielnia Mieszkaniowa</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f4f4;
+}
+
+.box{
+    max-width:500px;
+    margin:50px auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+input, textarea{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    background:#1f7aec;
+    color:white;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#145fc1;
+}
+</style>
+
+</head>
+<body>
+
+<div class="box">
+<h2>Zgłoszenie</h2>
+
+<label>Imię</label>
+<input id="imie" type="text">
+
+<label>Powód zgłoszenia</label>
+<textarea id="powod"></textarea>
+
+<label>Numer</label>
+<input id="numer" type="number">
+
+<button onclick="wyslij()">Wyślij zgłoszenie</button>
+
+<p id="status"></p>
+
+</div>
+
+<script>
+
+const WEBHOOK_URL = "TU_WKLEJ_SWÓJ_WEBHOOK";
+
+function wyslij(){
+
+const imie = document.getElementById("imie").value;
+const powod = document.getElementById("powod").value;
+const numer = document.getElementById("numer").value + "-ZD";
+
+fetch(WEBHOOK_URL,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+content:
+`📨 **Nowe zgłoszenie**
+
+👤 Imię: ${imie}
+
+📄 Powód zgłoszenia: ${powod}
+
+🔢 Numer: ${numer}`
+})
+})
+.then(()=>{
+document.getElementById("status").innerHTML="✅ Zgłoszenie wysłane!";
+})
+.catch(()=>{
+document.getElementById("status").innerHTML="❌ Nie udało się wysłać.";
+});
+
+}
+
+</script>
+
+</body>
+</html>
